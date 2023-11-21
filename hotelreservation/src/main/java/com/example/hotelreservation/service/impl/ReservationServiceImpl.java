@@ -55,11 +55,24 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void cancelReservation(Integer reservationId) {
-        ReservationMaster reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
-        reservationRepository.delete(reservation);
+    public Message cancelReservation(Integer reservationId) {
+        Message message = new Message();
+        try {
+            ReservationMaster reservation = reservationRepository.findById(reservationId)
+                    .orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
+
+            reservationRepository.delete(reservation);
+
+            message.setMsg("Cancelled reservation successfully");
+            message.setFlag(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setMsg("Failed to cancel reservation");
+            message.setFlag(false);
+        }
+        return message;
     }
+
     @Override
     public List<ReservationMaster> listGuestReservations(Integer guestId) {
         GuestMaster guest = guestRepository.findById(guestId).orElseThrow(() -> new EntityNotFoundException("Guest not found"));

@@ -31,8 +31,11 @@ public class ReservationController {
     }
     @DeleteMapping(value = "/cancelReservation/{reservationId}")
     public ResponseEntity<Void> cancelReservation(@PathVariable Integer reservationId) {
-        reservationService.cancelReservation(reservationId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Message message=reservationService.cancelReservation(reservationId);
+        HttpStatus status = message.isFlag() ? HttpStatus.NO_CONTENT : HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity(message, status);
+
  }
     @GetMapping(value = "/guestIdWiseAllReservation/{guestId}")
     public ResponseEntity<List<ReservationMaster>> listGuestReservations(@PathVariable Integer guestId) {

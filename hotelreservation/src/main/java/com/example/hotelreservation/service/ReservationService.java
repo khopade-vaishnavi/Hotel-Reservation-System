@@ -14,5 +14,5 @@ public interface ReservationService {
 
     List<ReservationMaster> listGuestReservations(Integer guestId);
 
-    void cancelReservation(Integer reservationId);
+    Message cancelReservation(Integer reservationId);
 }
